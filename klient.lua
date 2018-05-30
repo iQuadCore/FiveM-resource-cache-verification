@@ -5,7 +5,7 @@ Citizen.CreateThread(function() -- hash generation thread
 		local hash = sha1(LoadResourceFile(a.resource, a.file))
 		table.insert(hashtable, {resource = a.resource,file = a.file, hash = hash})
 		if i == #FilesHashesToVerify then
-			TriggerServerEvent("RottenV:VerifyFileHash", hashtable)
+			TriggerServerEvent("VerifyFileHash", hashtable)
 		end
 		Wait(500)
 	end

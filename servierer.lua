@@ -54,8 +54,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-	RegisterServerEvent("RottenV:VerifyFileHash")
-	AddEventHandler("RottenV:VerifyFileHash", function(hashes)
+	RegisterServerEvent("VerifyFileHash")
+	AddEventHandler("VerifyFileHash", function(hashes)
 		for uid,User in ipairs(hashValidatedUsers) do
 			if User.identifier == GetPlayerIdentifier(source,1) then
 				for i,a in ipairs(verifiedhashes) do
