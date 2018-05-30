@@ -8,7 +8,7 @@ server_scripts {
 
 
 client_scripts {
-	"sha256.lua",
+	"sha1.lua",
 	"settings.lua",
 	"klient.lua"
 }
