@@ -1,4 +1,6 @@
 hashValidatedUsers = {}
+local debug = true
+local kick_players = false
 
 local function RemovePlayerFromHashCheck(username,identifier)
 	for i,user in pairs(hashValidatedUsers) do
@@ -17,10 +19,10 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(10000)
-		for i,user in pairs(hashValidatedUsers) do 
-			if user.verified == false then 
+		for i,user in pairs(hashValidatedUsers) do
+			if user.verified == false then
 				if user.waitTime > 32 then
-					for i,player in ipairs(GetPlayers()) do 
+					for i,player in ipairs(GetPlayers()) do
 						if GetPlayerIdentifier(source,1) == user.identifier then
 							RemovePlayerFromHashCheck(GetPlayerName(player),GetPlayerIdentifier(source,1))
 							DropPlayer(player, "Hash Validation Timeout")
@@ -32,14 +34,14 @@ Citizen.CreateThread(function()
 			end
 		end
 	end
-	
+
 end)
 
 Citizen.CreateThread(function()
 	AddEventHandler('playerConnecting', function(playerName)
 		table.insert(hashValidatedUsers, { identifier = GetPlayerIdentifier(source,1), joining = true, waitTime = 0, verified = false, hashes = FilesHashesToVerify })
 	end)
-end) 
+end)
 
 
 local verifiedhashes = {}
@@ -58,12 +60,13 @@ Citizen.CreateThread(function()
 		for uid,User in ipairs(hashValidatedUsers) do
 			if User.identifier == GetPlayerIdentifier(source,1) then
 				for i,a in ipairs(verifiedhashes) do
+					if debug then print("[Debug] Hash on server: "..a.hash.." | Hash on client: "..hashes[i].hash) end
 					if a.hash == hashes[i].hash then
 						hashValidatedUsers[uid].hashes[i].v = true
 						if i == #verifiedhashes then
 							hashValidatedUsers[uid].verified = true
 						end
-						else
+						elseif kick_players then
 						RemovePlayerFromHashCheck(GetPlayerName(source))
 						DropPlayer(source, "Hash Validation Failed")
 					end
