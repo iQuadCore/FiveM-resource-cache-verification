@@ -26,13 +26,13 @@ Citizen.CreateThread(function()
 							DropPlayer(player, "Hash Validation Timeout")
 						end
 					end
-				else
+					else
 					hashValidatedUsers[i].waitTime = hashValidatedUsers[i].waitTime+1
 				end
 			end
 		end
 	end
-
+	
 end)
 
 Citizen.CreateThread(function()
@@ -47,7 +47,7 @@ Citizen.CreateThread(function()
 	Wait(500)
 	for i,a in pairs(FilesHashesToVerify) do
 		local f = LoadResourceFile(a.resource, a.file)
-		local hash = sha1(f)
+		local hash = crc32(f)
 		table.insert(verifiedhashes, {resource = a.resource, file = a.file, hash = hash})
 	end
 end)
@@ -63,7 +63,7 @@ Citizen.CreateThread(function()
 						if i == #verifiedhashes then
 							hashValidatedUsers[uid].verified = true
 						end
-					else
+						else
 						RemovePlayerFromHashCheck(GetPlayerName(source))
 						DropPlayer(source, "Hash Validation Failed")
 					end
@@ -71,3 +71,4 @@ Citizen.CreateThread(function()
 			end
 		end
 	end)
+end)
