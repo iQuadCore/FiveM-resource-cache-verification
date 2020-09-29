@@ -1,6 +1,6 @@
 local hashtable = {}
 Citizen.CreateThread(function() -- hash generation thread
-	Wait(5000)
+	Wait(10000)
 	for i,a in ipairs(FilesHashesToVerify) do
 		local hash = crc32(LoadResourceFile(a.resource, a.file))
 		table.insert(hashtable, {resource = a.resource,file = a.file, hash = hash})
