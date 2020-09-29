@@ -1,12 +1,5 @@
 hashValidatedUsers = {}
 
-Citizen.CreateThread(function()
-	AddEventHandler('playerDropped', function(reason)
-		RemovePlayerFromHashCheck(GetPlayerName(source),GetPlayerIdentifier(source,1))
-	end)
-end)
-
-
 local function RemovePlayerFromHashCheck(username,identifier)
 	for i,user in pairs(hashValidatedUsers) do
 		if user.identifier == identifier then
@@ -14,6 +7,12 @@ local function RemovePlayerFromHashCheck(username,identifier)
 		end
 	end
 end
+
+Citizen.CreateThread(function()
+	AddEventHandler('playerDropped', function(reason)
+		RemovePlayerFromHashCheck(GetPlayerName(source),GetPlayerIdentifier(source,1))
+	end)
+end)
 
 Citizen.CreateThread(function()
 	while true do
